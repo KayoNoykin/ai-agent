@@ -9,8 +9,8 @@ def get_file_content(working_directory: str, file_path: str) -> str:
         return f'Error: File not found or is not a regular file: "{file_path}"'
     if not valid_target_file:
         return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
-    file = open(target_file)
-    content = file.read(MAX_CHARS)
-    if file.read(1):
-        content += f'[...File "{file_path}" truncated at {MAX_CHARS} characters]'
+    with open(target_file, "r") as file:
+        content = file.read(MAX_CHARS)
+        if file.read(1):
+            content += f'[...File "{file_path}" truncated at {MAX_CHARS} characters]'
     return content
