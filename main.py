@@ -5,7 +5,7 @@ from openai import OpenAI
 load_dotenv()
 api_key = os.environ.get("OPENROUTER_API_KEY")
 if not api_key:
-     raise RuntimeError("No API key found - check .env file")
+     raise RuntimeError("no API key found - check .env file")
 
 client = OpenAI(
      base_url="https://openrouter.ai/api/v1",
@@ -22,4 +22,11 @@ response = client.chat.completions.create(
     ],
 )
 
+if not response.usage:
+     raise RuntimeError("failed API request")
+prompt_tokens = response.usage.prompt_tokens
+response_tokens = response.usage.completion_tokens
+print(f"Prompt tokens: {prompt_tokens}")
+print(f"Response tokens: {response_tokens}")
+print("Response:")
 print(response.choices[0].message.content)
