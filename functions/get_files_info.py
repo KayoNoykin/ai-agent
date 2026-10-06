@@ -1,7 +1,7 @@
 import os
 
 def get_files_info(working_directory: str, directory: str = ".") -> str:
-   # try:
+    try:
         abs_working_dir = os.path.abspath(working_directory)
         target_dir = os.path.normpath(os.path.join(abs_working_dir, directory))
         valid_target_dir = os.path.commonpath([abs_working_dir, target_dir]) == abs_working_dir
@@ -20,5 +20,5 @@ def get_files_info(working_directory: str, directory: str = ".") -> str:
             output = f"- {name}: file_size={file_size} bytes, is_dir={isdir}"
             directory_contents_output.append(output)
         return results + "\n".join(directory_contents_output)
-  #  except:
-  #      return "Error: unknown error"
+    except:
+        return "Error: unknown error"
