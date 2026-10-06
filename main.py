@@ -12,6 +12,10 @@ parser = argparse.ArgumentParser(description="Chatbot")
 parser.add_argument("user_prompt", type=str, help="User Prompt")
 args = parser.parse_args()
 
+messages = [
+    {"role": "user", "content": args.user_prompt},
+]
+
 client = OpenAI(
      base_url="https://openrouter.ai/api/v1",
      api_key=api_key,
@@ -19,12 +23,7 @@ client = OpenAI(
 
 response = client.chat.completions.create(
     model="openrouter/free",
-    messages=[
-        {
-            "role": "user",
-            "content": args.user_prompt,
-        }
-    ],
+    messages=messages,
 )
 
 if not response.usage:
