@@ -21,4 +21,4 @@ def get_files_info(working_directory: str, directory: str = ".") -> str:
             directory_contents_output.append(output)
         return results + "\n".join(directory_contents_output)
     except:
-        return "Error: unknown error"
+        return "Error: target_dir not valid"
