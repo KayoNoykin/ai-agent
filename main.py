@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import argparse
 from prompts import *
+from call_function import *
 
 def main() -> None:
 
@@ -30,6 +31,7 @@ def main() -> None:
         model="openrouter/free",
         messages=messages,
         temperature=0,
+        tools=available_functions,
     )
 
     if not response.usage:
