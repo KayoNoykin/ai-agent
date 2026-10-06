@@ -1,5 +1,5 @@
 import os
-from dotenv import load_dotenv # pyright: ignore[reportMissingImports]
+from dotenv import load_dotenv
 from openai import OpenAI
 import argparse
 
