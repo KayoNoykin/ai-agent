@@ -11,6 +11,3 @@ wheels/
 
 #Environment files
 .env
-
-#test files
-morelorem.txt
