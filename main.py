@@ -44,8 +44,13 @@ def main() -> None:
 
     if message.tool_calls:
         for tool_call in message.tool_calls:
-            function_args = json.loads(tool_call.function.arguments or "{}")
-            print(f"Calling function: {tool_call.function.name}({function_args})")
+            # function_args = json.loads(tool_call.function.arguments or "{}")
+            # print(f"Calling function: {tool_call.function.name}({function_args})")
+            result_message = call_function(tool_call)
+            if not result_message["content"]:
+                raise Exception("No content returned")
+            if args.verbose:
+                print(f"-> {result_message['content']}")
 
     if args.verbose:
         print(f"User prompt: {args.user_prompt}")
