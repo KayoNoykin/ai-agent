@@ -4,6 +4,7 @@ from openai import OpenAI
 import argparse
 from prompts import *
 from call_function import *
+import json
 
 def main() -> None:
 
@@ -38,6 +39,13 @@ def main() -> None:
         raise RuntimeError("failed API request")
     prompt_tokens = response.usage.prompt_tokens
     response_tokens = response.usage.completion_tokens
+    message = response.choices[0].message
+    
+
+    if message.tool_calls:
+        for tool_call in message.tool_calls:
+            function_args = json.loads(tool_call.function.arguments or "{}")
+            print(f"Calling function: {tool_call.function.name}({function_args})")
 
     if args.verbose:
         print(f"User prompt: {args.user_prompt}")
