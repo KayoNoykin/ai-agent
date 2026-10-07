@@ -21,7 +21,8 @@ function_map: dict[str, Callable[..., str]] = {
 
 def call_function(tool_call, verbose:bool = False) -> dict:
     function_name = tool_call.function.name
-    function_args = json.loads(tool_call.function.arguments or '{"working_directory": "./calculator"}')
+    function_args = json.loads(tool_call.function.arguments or '{}')
+    function_args["working_directory"] = "./calculator"
     if verbose:
         print(f" - Calling function: {function_name}({function_args})")
     else:
