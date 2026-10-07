@@ -51,8 +51,9 @@ def main() -> None:
         print(f"User prompt: {args.user_prompt}")
         print(f"Prompt tokens: {prompt_tokens}")
         print(f"Response tokens: {response_tokens}")
-    print("Response:")
-    print(response.choices[0].message.content)
+    if response.choices[0].message.content:
+        print("Response:")
+        print(response.choices[0].message.content)
 
 if __name__ == "__main__":
     main()
