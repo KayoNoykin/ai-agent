@@ -5,6 +5,7 @@ import argparse
 from prompts import *
 from call_function import *
 import json
+from generate_content import generate_content
 
 def main() -> None:
 
@@ -28,12 +29,7 @@ def main() -> None:
         api_key=api_key,
     )
 
-    response = client.chat.completions.create(
-        model="openrouter/free",
-        messages=messages,
-        temperature=0,
-        tools=available_functions,
-    )
+    response = generate_content(client, messages, available_functions)
 
     if not response.usage:
         raise RuntimeError("failed API request")
