@@ -26,3 +26,28 @@ def run_python_file(
         output.append(f"STDOUT: {process.stdout}")
         output.append(f"STDERR: {process.stderr}")
     return "\n".join(output)
+
+schema_run_python_file = {
+    "type": "function",
+    "function": {
+        "name": "run_python_file",
+        "description": "executes the specified python file with optional arguments",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "file_path": {
+                    "type": "string",
+                    "description": "File path to python file to be run, relative to the working directory (default is the working directory itself)",
+                },
+                "args": {
+                    "type": "array",
+                    "description": "An optional list of arguments to provide",
+                    "items": {
+                        "type": "string",
+                    },
+                },
+            },
+            "required" : ["file_path"],
+        },
+    },
+}
