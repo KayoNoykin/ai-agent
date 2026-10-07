@@ -6,6 +6,7 @@ from prompts import *
 from call_function import *
 import json
 from generate_content import generate_content
+import sys
 
 def main() -> None:
 
@@ -29,31 +30,41 @@ def main() -> None:
         api_key=api_key,
     )
 
-    response = generate_content(client, messages, available_functions)
+    for i in range(20):
 
-    if not response.usage:
-        raise RuntimeError("failed API request")
-    prompt_tokens = response.usage.prompt_tokens
-    response_tokens = response.usage.completion_tokens
-    message = response.choices[0].message
-    
+        response = generate_content(client, messages, available_functions)
 
-    if message.tool_calls:
-        for tool_call in message.tool_calls:
-            # function_args = json.loads(tool_call.function.arguments or "{}")
-            # print(f"Calling function: {tool_call.function.name}({function_args})")
-            result_message = call_function(tool_call)
-            if not result_message["content"]:
-                raise Exception("No content returned")
-            if args.verbose:
-                print(f"-> {result_message['content']}")
+        if not response.usage:
+            raise RuntimeError("failed API request")
+        prompt_tokens = response.usage.prompt_tokens
+        response_tokens = response.usage.completion_tokens
+        message = response.choices[0].message
+        
+        messages.append(message)
+        
 
-    if args.verbose:
-        print(f"User prompt: {args.user_prompt}")
-        print(f"Prompt tokens: {prompt_tokens}")
-        print(f"Response tokens: {response_tokens}")
-    print("Response:")
-    print(response.choices[0].message.content)
+        if message.tool_calls:
+            for tool_call in message.tool_calls:
+                # function_args = json.loads(tool_call.function.arguments or "{}")
+                # print(f"Calling function: {tool_call.function.name}({function_args})")
+                result_message = call_function(tool_call)
+                if not result_message["content"]:
+                    raise Exception("No content returned")
+                if args.verbose:
+                    print(f"-> {result_message['content']}")
+                messages.append(result_message)
+
+        if args.verbose:
+            print(f"User prompt: {args.user_prompt}")
+            print(f"Prompt tokens: {prompt_tokens}")
+            print(f"Response tokens: {response_tokens}")
+        if not message.tool_calls:
+            print("Response:")
+            print(response.choices[0].message.content)
+            break
+        if i == 20:
+            print("Error: maximum iterations reached")
+            sys.exit(1)
 
 if __name__ == "__main__":
     main()
